@@ -1233,7 +1233,7 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
                     dm.free();
                 }
             }
-
+            s_logger.info("libvirt create domain for vm '" + vmName +"' with XML '" + domainXML + "'");
             conn.domainCreateXML(domainXML, 0);
         } catch (final LibvirtException e) {
             throw e;
