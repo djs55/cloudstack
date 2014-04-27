@@ -109,8 +109,18 @@ public class XenServerResourceNewBase extends XenServer620SP1Resource {
         classes.add("Task/" + task.toWireString());
         String token = "";
         Double t = new Double(timeout / 1000);
+
         while (true) {
-            EventBatch map = Event.from(c, classes, token, t);
+            EventBatch map;
+            try {
+                map = Event.from(c, classes, token, t);
+            } catch (XenAPIException e){
+                // The only possible XenAPIException is a SESSION_INVALID.
+                // If this happens then we should log back in and continue.
+                s_logger.warn("Event.from failed with " + e.toString() + ": reconnecting");
+                c = getConnection(); // XXX: this needs to log back in
+                continue;
+            }
             token = map.token;
             @SuppressWarnings("unchecked")
             Set<Event.Record> events = map.events;
