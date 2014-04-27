@@ -140,7 +140,7 @@ public class XenServerResourceNewBase extends XenServer620SP1Resource {
 
                 Task.Record taskRecord = (Task.Record)rec.snapshot;
 
-                if (taskRecord.status != Types.TaskStatusType.PENDING) {
+                if ((taskRecord.status != Types.TaskStatusType.PENDING) && (taskRecord.status != Types.TaskStatusType.CANCELLING)) {
                     if (s_logger.isDebugEnabled()) {
                         s_logger.debug("Task, ref:" + task.toWireString() + ", UUID:" + taskRecord.uuid + " is done " + taskRecord.status);
                     }
