@@ -5554,7 +5554,7 @@ public abstract class CitrixResourceBase implements ServerResource, HypervisorRe
     }
 
     public Connection getConnection() {
-        return ConnPool.connect(_host.uuid, _host.pool, _host.ip, _username, _password, _wait);
+        return ConnPool.getConnect(_host.ip, _username, _password);
     }
 
 
