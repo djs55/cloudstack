@@ -451,24 +451,27 @@ public class XenServerConnectionPool {
                 return super.dispatch(methodcall, methodparams);
             }
 
-            try {
-                return super.dispatch(methodcall, methodparams);
-            } catch (Types.SessionInvalid e) {
-                s_logger.debug("Session is invalid for method: " + methodcall + " due to " + e.toString());
-                removeConnect(_poolUuid);
-                throw e;
-            } catch (XmlRpcClientException e) {
-                s_logger.debug("XmlRpcClientException for method: " + methodcall + " due to " + e.toString());
-                removeConnect(_poolUuid);
-                throw e;
-            } catch (XmlRpcException e) {
-                s_logger.debug("XmlRpcException for method: " + methodcall + " due to " + e.toString());
-                removeConnect(_poolUuid);
-                throw e;
-            } catch (Types.HostIsSlave e) {
-                 s_logger.debug("HostIsSlave Exception for method: " + methodcall + " due to " + e.toString());
-                 removeConnect(_poolUuid);
+            while (true) {
+                try {
+                    return super.dispatch(methodcall, methodparams);
+                } catch (Types.SessionInvalid e) {
+                    s_logger.warn("Session is invalid for method: " + methodcall + " logging back in");
+                    // This will reset the session reference cached inside the Connection
+                    Session.loginWithPassword(this, _username, _password.peek(), APIVersion.latest().toString());
+                    continue;
+                } catch (XmlRpcClientException e) {
+                    s_logger.debug("XmlRpcClientException for method: " + methodcall + " due to " + e.toString());
+                    removeConnect(_poolUuid);
+                    throw e;
+                } catch (XmlRpcException e) {
+                    s_logger.debug("XmlRpcException for method: " + methodcall + " due to " + e.toString());
+                    removeConnect(_poolUuid);
+                    throw e;
+                } catch (Types.HostIsSlave e) {
+                    s_logger.debug("HostIsSlave Exception for method: " + methodcall + " due to " + e.toString());
+                    removeConnect(_poolUuid);
                  throw e;
+                }
             }
         }
     }
