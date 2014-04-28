@@ -438,14 +438,6 @@ public class XenServerConnectionPool {
             return _poolUuid;
         }
 
-        public String getUsername() {
-            return _username;
-        }
-
-        public Queue<String> getPassword() {
-            return _password;
-        }
-
         public String getIp() {
             return _ip;
         }
