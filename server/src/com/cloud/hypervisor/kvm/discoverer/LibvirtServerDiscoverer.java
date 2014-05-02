@@ -158,8 +158,8 @@ public abstract class LibvirtServerDiscoverer extends DiscovererBase implements 
                 throw new DiscoveredWithErrorException("Authentication error");
             }
 
-            if (!SSHCmdHelper.sshExecuteCmd(sshConnection, "lsmod|grep kvm", 3)) {
-                s_logger.debug("It's not a KVM enabled machine");
+            if (!SSHCmdHelper.sshExecuteCmd(sshConnection, "virsh capabilities | grep domain", 3)) {
+                s_logger.debug("It's not a libvirt enabled machine");
                 return null;
             }
 
