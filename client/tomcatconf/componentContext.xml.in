@@ -161,6 +161,7 @@
           <ref bean="SecondaryStorageDiscoverer"/>
           <ref bean="KvmServerDiscoverer"/>
           <ref bean="LxcServerDiscoverer"/>
+          <ref bean="XenLibvirtDiscoverer"/>
           <ref bean="BareMetalDiscoverer"/>
           <ref bean="OvmDiscoverer"/>
       </list>

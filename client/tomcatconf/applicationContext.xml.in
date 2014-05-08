@@ -544,6 +544,10 @@
     <property name="name" value="Lxc Discover"/>
   </bean>
 
+  <bean id="XenLibvirtDiscoverer" class="com.cloud.hypervisor.kvm.discoverer.XenLibvirtDiscoverer">
+    <property name="name" value="Xen Discover"/>
+  </bean>
+
   <bean id="OvmDiscoverer" class="com.cloud.ovm.hypervisor.OvmDiscoverer">
     <property name="name" value="Ovm Discover"/>
   </bean>

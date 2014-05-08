@@ -38,6 +38,11 @@
         <property name="name" value="Lxc Discover" />
     </bean>
 
+    <bean id="XenLibvirtDiscoverer"
+        class="com.cloud.hypervisor.kvm.discoverer.XenLibvirtDiscoverer">
+        <property name="name" value="Xen Discover" />
+    </bean>
+
     <bean id="dummyHostDiscoverer" class="com.cloud.resource.DummyHostDiscoverer">
         <property name="name" value="dummyHostDiscoverer" />
     </bean>
