@@ -119,7 +119,7 @@ public class SSHCmdHelper {
                 }
                 if ((stdout.available() == 0) && (stderr.available() == 0)) {
                     int conditions = sshSession.waitForCondition(ChannelCondition.STDOUT_DATA
-                                | ChannelCondition.STDERR_DATA | ChannelCondition.EOF | ChannelCondition.EXIT_STATUS,
+                                | ChannelCondition.STDERR_DATA | ChannelCondition.EXIT_STATUS,
                                 120000);
 
                     if ((conditions & ChannelCondition.TIMEOUT) != 0) {
@@ -129,12 +129,6 @@ public class SSHCmdHelper {
                     }
 
                     if ((conditions & ChannelCondition.EXIT_STATUS) != 0) {
-                        if ((conditions & (ChannelCondition.STDOUT_DATA | ChannelCondition.STDERR_DATA)) == 0) {
-                            break;
-                        }
-                    }
-
-                    if ((conditions & ChannelCondition.EOF) != 0) {
                         if ((conditions & (ChannelCondition.STDOUT_DATA | ChannelCondition.STDERR_DATA)) == 0) {
                             break;
                         }
