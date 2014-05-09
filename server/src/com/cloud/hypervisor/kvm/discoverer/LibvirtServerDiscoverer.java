@@ -117,8 +117,10 @@ public abstract class LibvirtServerDiscoverer extends DiscovererBase implements 
     public Map<? extends ServerResource, Map<String, String>>
         find(long dcId, Long podId, Long clusterId, URI uri, String username, String password, List<String> hostTags) throws DiscoveryException {
 
+        s_logger.error("YYY: find");
         ClusterVO cluster = _clusterDao.findById(clusterId);
         if (cluster == null || cluster.getHypervisorType() != getHypervisorType()) {
+            s_logger.error("YYY: cluster.hypervisorType is wrong");
             if (s_logger.isInfoEnabled())
                 s_logger.info("invalid cluster id or cluster is not for " + getHypervisorType() + " hypervisors");
             return null;
@@ -136,9 +138,11 @@ public abstract class LibvirtServerDiscoverer extends DiscovererBase implements 
         try {
 
             String hostname = uri.getHost();
+            s_logger.error("YYY: hostname = " + hostname);
             InetAddress ia = InetAddress.getByName(hostname);
             agentIp = ia.getHostAddress();
             String guid = UUID.nameUUIDFromBytes(agentIp.getBytes()).toString();
+            s_logger.error("YYY: guid = " + guid);
             String guidWithTail = guid + "-LibvirtComputingResource";/*
                                                                       * tail
                                                                       * added by
@@ -149,17 +153,18 @@ public abstract class LibvirtServerDiscoverer extends DiscovererBase implements 
                 s_logger.debug("Skipping " + agentIp + " because " + guidWithTail + " is already in the database.");
                 return null;
             }
+            s_logger.error("XXX about to ssh in");
 
             sshConnection = new com.trilead.ssh2.Connection(agentIp, 22);
 
             sshConnection.connect(null, 60000, 60000);
             if (!sshConnection.authenticateWithPassword(username, password)) {
-                s_logger.debug("Failed to authenticate");
+                s_logger.error("Failed to authenticate");
                 throw new DiscoveredWithErrorException("Authentication error");
             }
 
             if (!SSHCmdHelper.sshExecuteCmd(sshConnection, "virsh capabilities | grep domain", 3)) {
-                s_logger.debug("It's not a libvirt enabled machine");
+                s_logger.error("It's not a libvirt enabled machine");
                 return null;
             }
 

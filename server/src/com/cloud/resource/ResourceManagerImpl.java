@@ -539,6 +539,7 @@ public class ResourceManagerImpl extends ManagerBase implements ResourceManager,
     @Override
     public Discoverer getMatchingDiscover(Hypervisor.HypervisorType hypervisorType) {
         for (Discoverer discoverer : _discoverers) {
+            s_logger.warn("considering discoverer " + discoverer.toString() + " (type " + discoverer.getHypervisorType() + " <> " + hypervisorType + ")");
             if (discoverer.getHypervisorType() == hypervisorType) {
                 return discoverer;
             }
@@ -720,11 +721,13 @@ public class ResourceManagerImpl extends ManagerBase implements ResourceManager,
         s_logger.info("Trying to add a new host at " + url + " in data center " + dcId);
         boolean isHypervisorTypeSupported = false;
         for (Discoverer discoverer : _discoverers) {
+            s_logger.info("XXX trying with " + discoverer.toString());
             if (params != null) {
                 discoverer.putParam(params);
             }
 
             if (!discoverer.matchHypervisor(hypervisorType)) {
+                s_logger.info("XXX doesn't match hypervisor");
                 continue;
             }
             isHypervisorTypeSupported = true;
@@ -732,10 +735,13 @@ public class ResourceManagerImpl extends ManagerBase implements ResourceManager,
 
             processResourceEvent(ResourceListener.EVENT_DISCOVER_BEFORE, dcId, podId, clusterId, uri, username, password, hostTags);
             try {
+                s_logger.info("XXX going for it");
                 resources = discoverer.find(dcId, podId, clusterId, uri, username, password, hostTags);
             } catch (DiscoveryException e) {
+                s_logger.info("XXX ... it didn't go well");
                 throw e;
             } catch (Exception e) {
+                s_logger.info("XXX ... it couldn't get much worse");
                 s_logger.info("Exception in host discovery process with discoverer: " + discoverer.getName() + ", skip to another discoverer if there is any");
             }
             processResourceEvent(ResourceListener.EVENT_DISCOVER_AFTER, resources);

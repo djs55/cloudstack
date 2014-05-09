@@ -92,7 +92,7 @@ public class SSHCmdHelper {
     }
 
     public static int sshExecuteCmdOneShotWithExitCode(com.trilead.ssh2.Connection sshConnection, String cmd) throws SshException {
-        s_logger.debug("Executing cmd: " + cmd);
+        s_logger.warn("Executing cmd: " + cmd);
         Session sshSession = null;
         try {
             sshSession = sshConnection.openSession();
@@ -148,11 +148,10 @@ public class SSHCmdHelper {
 
             String result = sbResult.toString();
             if (result != null && !result.isEmpty())
-                s_logger.debug(cmd + " output:" + result);
-
+                s_logger.warn(cmd + " output:" + result);
              return sshSession.getExitStatus();
         } catch (Exception e) {
-            s_logger.debug("Ssh executed failed", e);
+            s_logger.error("Ssh executed failed", e);
             throw new SshException("Ssh executed failed " + e.getMessage());
         } finally {
             if (sshSession != null)
