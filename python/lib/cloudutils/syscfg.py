@@ -128,9 +128,9 @@ class sysConfigAgent(sysConfig):
         if not hostname.isSuccess():
             raise CloudInternalException("Checking hostname ... [Failed]\nPlease edit /etc/hosts, add a Fully Qualified Domain Name as your hostname\n")
 
-        kvmEnabled = self.svo.isKVMEnabled()
-        if not kvmEnabled:
-            raise CloudInternalException("Checking KVM...[Failed]\nPlease enable KVM on this machine\n")
+        hypervisorEnabled = self.svo.isHypervisorEnabled()
+        if not hypervisorEnabled:
+            raise CloudInternalException("Checking for hypervisor...[Failed]\nPlease enable KVM or Xen on this machine\n")
         
         return True
 

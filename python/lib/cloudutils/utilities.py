@@ -142,7 +142,19 @@ class Distribution:
         
  
 class serviceOps:
-    pass
+    def isHypervisorEnabled(self):
+        if os.path.exists("/sys/hypervisor/type"):
+            f = open("/sys/hypervisor/type")
+            try:
+                type = f.readline().strip()
+                if type <> "kvm" and type <> "xen":
+                    return False
+                return True
+            finally:
+                f.close()
+        else:
+            return False
+
 class serviceOpsRedhat(serviceOps):
     def isServiceRunning(self, servicename):
         try:
@@ -173,11 +185,6 @@ class serviceOpsRedhat(serviceOps):
         bash("chkconfig --level 2345 " + servicename + " on")
         return self.startService(servicename,force=forcestart)
         
-    def isKVMEnabled(self):
-        if os.path.exists("/dev/kvm"):
-            return True
-        else:
-            return False
         
 class serviceOpsUbuntu(serviceOps):
     def isServiceRunning(self, servicename):
@@ -207,6 +214,3 @@ class serviceOpsUbuntu(serviceOps):
         bash("sudo update-rc.d -f " + servicename + " remove")
         bash("sudo update-rc.d -f " + servicename + " defaults")
         return self.startService(servicename,force=forcestart)
-
-    def isKVMEnabled(self):
-        return bash("kvm-ok").isSuccess() 
