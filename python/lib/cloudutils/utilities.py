@@ -140,18 +140,24 @@ class Distribution:
     def getArch(self):
         return self.arch
         
- 
+def getHypervisorType():
+    if os.path.exists("/sys/hypervisor/type"):
+        f = open("/sys/hypervisor/type")
+        try:
+            return f.readline().strip()
+        finally:
+            f.close()
+    else:
+        return None
+
 class serviceOps:
     def isHypervisorEnabled(self):
-        if os.path.exists("/sys/hypervisor/type"):
-            f = open("/sys/hypervisor/type")
-            try:
-                type = f.readline().strip()
-                if type <> "kvm" and type <> "xen":
-                    return False
-                return True
-            finally:
-                f.close()
+        type = getHypervisorType()
+        if type == "kvm" or type == "xen":
+            return True
+        elif type is not None:
+            logger.debug("I don't recognise hypervisor type %s. I only recognise kvm and xen" % type)
+            return False
         else:
             return False
 

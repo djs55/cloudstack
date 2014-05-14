@@ -14,7 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from utilities import writeProgressBar, bash
+from utilities import writeProgressBar, bash, getHypervisorType
 from cloudException import CloudRuntimeException, CloudInternalException, formatExceptionInfo
 import logging
 from networkConfig import networkConfig
@@ -656,6 +656,7 @@ class cloudAgentConfig(serviceCfgBase):
             cfo.addEntry("guid", str(self.syscfg.env.uuid))
             cfo.addEntry("mount.path", "/mnt")
             cfo.addEntry("resource", "com.cloud.storage.resource.LocalSecondaryStorageResource|com.cloud.agent.resource.computing.CloudZonesComputingResource")
+            cfo.addEntry("hypervisor.type", getHypervisorType())
             cfo.save()
 
             #self.syscfg.svo.stopService("cloud-agent")
@@ -679,6 +680,7 @@ class cloudAgentConfig(serviceCfgBase):
             if cfo.getEntry("local.storage.uuid") == "":
                 cfo.addEntry("local.storage.uuid", str(bash("uuidgen").getStdout()))
             cfo.addEntry("resource", "com.cloud.hypervisor.kvm.resource.LibvirtComputingResource")
+            cfo.addEntry("hypervisor.type", getHypervisorType())
             cfo.save()
 
             self.syscfg.svo.stopService("cloudstack-agent")
