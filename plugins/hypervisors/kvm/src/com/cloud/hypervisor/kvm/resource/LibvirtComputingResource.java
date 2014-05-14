@@ -945,7 +945,7 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
         storageHandler = new StorageSubsystemCommandHandlerBase(storageProcessor);
 
         String unameKernelVersion = Script.runSimpleBashScript("uname -r");
-        String[] kernelVersions = unameKernelVersion.split("[\\.\\-]");
+        String[] kernelVersions = unameKernelVersion.split("[^\\d]");
         _kernelVersion = Integer.parseInt(kernelVersions[0]) * 1000 * 1000 + Integer.parseInt(kernelVersions[1]) * 1000 + Integer.parseInt(kernelVersions[2]);
 
         return true;
