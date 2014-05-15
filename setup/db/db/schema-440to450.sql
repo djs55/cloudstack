@@ -22,6 +22,13 @@
 -- Disable foreign key checking
 -- SET foreign_key_checks = 0;
 
+
+INSERT INTO `cloud`.`vm_template` (id, uuid, unique_name, name, public, created, type, hvm, bits, account_id, url, checksum, enable_password, display_text, format, guest_os_id, featured, cross_zones, hypervisor_type)
+    VALUES (11, UUID(), 'routing-10', 'SystemVM Template (XEN)', 0, now(), 'SYSTEM', 0, 64, 1, 'http://jenkins.buildacloud.org/job/build-systemvm64-master/lastSuccessfulBuild/artifact/tools/appliance/dist/systemvm64template-master-kvm.qcow2.bz2', 'unknown', 0, 'SystemVM Template (XEN)', 'QCOW2', 15, 0, 1, 'XEN');
+INSERT INTO `cloud`.`vm_template` (id, uuid, unique_name, name, public, created, type, hvm, bits, account_id, url, checksum, display_text, enable_password, format, guest_os_id, featured, cross_zones, hypervisor_type, extractable)
+    VALUES (12, UUID(), 'centos55-x86_64', 'CentOS 5.5(64-bit) no GUI (KVM)', 1, now(), 'BUILTIN', 0, 64, 1, 'http://download.cloud.com/releases/2.2.0/eec2209b-9875-3c8d-92be-c001bd8a0faf.qcow2.bz2', 'ed0e788280ff2912ea40f7f91ca7a249', 'CentOS 5.5(64-bit) no GUI (XEN)', 0, 'QCOW2', 112, 1, 1, 'XEN', 1);
+
+
 ALTER TABLE `cloud`.`volumes` ADD COLUMN `provisioning_type` VARCHAR(32) NOT NULL DEFAULT 'Off' COMMENT 'pre allocation setting of the volume';
 ALTER TABLE `cloud`.`disk_offering` ADD COLUMN `provisioning_type` VARCHAR(32) NOT NULL DEFAULT 'Off' COMMENT 'pre allocation setting of the volume';
 
