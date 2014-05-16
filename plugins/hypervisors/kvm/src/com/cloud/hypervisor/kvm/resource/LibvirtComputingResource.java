@@ -4604,6 +4604,15 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
             }
         }
 
+        if (_hypervisorType == HypervisorType.XEN) {
+            try {
+                conn = LibvirtConnection.getConnectionByType(HypervisorType.XEN.toString());
+                vmStates.putAll(getHostVmStateReport(conn));
+            } catch (LibvirtException e) {
+                s_logger.debug("Failed to get connection: " + e.getMessage());
+            }
+        }
+
         return vmStates;
     }
 
