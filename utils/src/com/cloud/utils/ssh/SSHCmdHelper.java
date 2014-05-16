@@ -129,9 +129,9 @@ public class SSHCmdHelper {
                     }
 
                     if ((conditions & ChannelCondition.EXIT_STATUS) != 0) {
-                        if ((conditions & (ChannelCondition.STDOUT_DATA | ChannelCondition.STDERR_DATA)) == 0) {
-                            break;
-                        }
+                        /* We don't need to read the output data if the exit code is available */
+                        s_logger.error("conditions & ... = " + (conditions & (ChannelCondition.STDOUT_DATA | ChannelCondition.STDERR_DATA)));
+                        break;
                     }
                 }
 
@@ -154,8 +154,11 @@ public class SSHCmdHelper {
             s_logger.error("Ssh executed failed", e);
             throw new SshException("Ssh executed failed " + e.getMessage());
         } finally {
-            if (sshSession != null)
+            if (sshSession != null) {
+                s_logger.warn("sshSession.close()");
                 sshSession.close();
+                s_logger.warn("sshSession.close() completed");
+            }
         }
     }
 

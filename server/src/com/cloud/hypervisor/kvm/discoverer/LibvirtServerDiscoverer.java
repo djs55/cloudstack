@@ -205,6 +205,10 @@ public abstract class LibvirtServerDiscoverer extends DiscovererBase implements 
 
             String parameters = " -m " + _hostIp + " -z " + dcId + " -p " + podId + " -c " + clusterId + " -g " + guid + " -a";
 
+            // HACK
+            kvmPublicNic = "cloudbr2";
+            kvmPrivateNic = "cloudbr2";
+            kvmGuestNic = "cloudbr2";
             parameters += " --pubNic=" + kvmPublicNic;
             parameters += " --prvNic=" + kvmPrivateNic;
             parameters += " --guestNic=" + kvmGuestNic;
