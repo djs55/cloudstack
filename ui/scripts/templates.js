@@ -355,7 +355,7 @@
                                                     id: 'OVA',
                                                     description: 'OVA'
                                                 });
-                                            } else if (args.hypervisor == "KVM") {
+                                            } else if ((args.hypervisor == "KVM")||(args.hypervisor == "XEN")) {
                                                 //formatSelect.append("<option value='QCOW2'>QCOW2</option>");
                                                 items.push({
                                                     id: 'QCOW2',
