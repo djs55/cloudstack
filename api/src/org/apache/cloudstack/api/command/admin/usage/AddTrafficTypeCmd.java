@@ -62,7 +62,7 @@ public class AddTrafficTypeCmd extends BaseAsyncCreateCmd {
 
     @Parameter(name = ApiConstants.KVM_NETWORK_LABEL,
                type = CommandType.STRING,
-               description = "The network name label of the physical device dedicated to this traffic on a KVM host")
+               description = "The network name label of the physical device dedicated to this traffic on a KVM or XEN host")
     private String kvmLabel;
 
     @Parameter(name = ApiConstants.VMWARE_NETWORK_LABEL,

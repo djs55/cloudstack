@@ -45,7 +45,7 @@ public class TrafficTypeResponse extends BaseResponse {
     private String xenNetworkLabel;
 
     @SerializedName(ApiConstants.KVM_NETWORK_LABEL)
-    @Param(description = "The network name label of the physical device dedicated to this traffic on a KVM host")
+    @Param(description = "The network name label of the physical device dedicated to this traffic on a KVM or XEN host")
     private String kvmNetworkLabel;
 
     @SerializedName(ApiConstants.VMWARE_NETWORK_LABEL)

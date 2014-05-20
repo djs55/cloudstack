@@ -66,7 +66,7 @@ public class CapabilitiesResponse extends BaseResponse {
     private Integer apiLimitInterval;
 
     @SerializedName("kvmsnapshotenabled")
-    @Param(description = "true if snapshot is supported for KVM host, false otherwise")
+    @Param(description = "true if snapshot is supported for KVM or XEN host, false otherwise")
     private boolean kvmSnapshotEnabled;
 
     @SerializedName("apilimitmax")

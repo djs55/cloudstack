@@ -88,7 +88,7 @@ public class CreateStoragePoolCmd extends BaseCmd {
     @Parameter(name = ApiConstants.HYPERVISOR,
                type = CommandType.STRING,
                required = false,
-               description = "hypervisor type of the hosts in zone that will be attached to this storage pool. KVM, VMware supported as of now.")
+               description = "hypervisor type of the hosts in zone that will be attached to this storage pool. XEN, KVM, VMware supported as of now.")
     private String hypervisor;
 
     /////////////////////////////////////////////////////
