@@ -35,7 +35,7 @@ public class KVMGuru extends HypervisorGuruBase implements HypervisorGuru {
 
     @Override
     public HypervisorType getHypervisorType() {
-        return HypervisorType.KVM;
+        return HypervisorType.XEN; /* XXX bad */
     }
 
     protected KVMGuru() {

@@ -29,7 +29,7 @@ public class KvmServerDiscoverer extends LibvirtServerDiscoverer {
 
     @Override
     public Hypervisor.HypervisorType getHypervisorType() {
-        return Hypervisor.HypervisorType.KVM;
+        return Hypervisor.HypervisorType.XEN; /* XXX wrong */
     }
 
     @Override
