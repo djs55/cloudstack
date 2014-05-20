@@ -1751,6 +1751,7 @@ public class VirtualNetworkApplianceManagerImpl extends ManagerBase implements V
                     templateName = RouterTemplateXen.valueIn(dest.getDataCenter().getId());
                     break;
                 case KVM:
+                case XEN:
                     templateName = RouterTemplateKvm.valueIn(dest.getDataCenter().getId());
                     break;
                 case VMware:

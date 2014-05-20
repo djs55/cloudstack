@@ -437,7 +437,8 @@ public class NfsSecondaryStorageResource extends ServerResourceBase implements S
 
         if (srcData.getHypervisorType() == HypervisorType.XenServer) {
             return copySnapshotToTemplateFromNfsToNfsXenserver(cmd, srcData, srcDataStore, destData, destDataStore);
-        } else if (srcData.getHypervisorType() == HypervisorType.KVM) {
+        } else if (srcData.getHypervisorType() == HypervisorType.KVM ||
+                   srcData.getHypervisorType() == HypervisorType.XEN) {
             File srcFile = getFile(srcData.getPath(), srcDataStore.getUrl());
             File destFile = getFile(destData.getPath(), destDataStore.getUrl());
 
