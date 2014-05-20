@@ -518,7 +518,7 @@ public enum Config {
             "true",
             "backup snapshot right after snapshot is taken",
             null),
-    KVMSnapshotEnabled("Snapshots", SnapshotManager.class, Boolean.class, "kvm.snapshot.enabled", "false", "whether snapshot is enabled for KVM hosts", null),
+    KVMSnapshotEnabled("Snapshots", SnapshotManager.class, Boolean.class, "kvm.snapshot.enabled", "false", "whether snapshot is enabled for KVM or XEN hosts", null),
 
     // Advanced
     JobExpireMinutes("Advanced", ManagementServer.class, String.class, "job.expire.minutes", "1440", "Time (in minutes) for async-jobs to be kept in system", null),
@@ -715,7 +715,7 @@ public enum Config {
             String.class,
             "system.vm.default.hypervisor",
             null,
-            "Hypervisor type used to create system vm, valid values are: XenServer, Xen, KVM, VMware, Hyperv, VirtualBox, Parralels, BareMetal, Ovm, LXC, Any",
+            "Hypervisor type used to create system vm, valid values are: XenServer, XEN, KVM, VMware, Hyperv, VirtualBox, Parralels, BareMetal, Ovm, LXC, Any",
             null),
     SystemVMRandomPassword(
             "Advanced",
