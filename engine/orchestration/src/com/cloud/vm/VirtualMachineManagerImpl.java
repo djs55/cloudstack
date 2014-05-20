@@ -1137,7 +1137,7 @@ public class VirtualMachineManagerImpl extends ManagerBase implements VirtualMac
 
     // for managed storage on KVM, need to make sure the path field of the volume in question is populated with the IQN
     private void handlePath(DiskTO[] disks, HypervisorType hypervisorType) {
-        if (hypervisorType != HypervisorType.KVM) {
+        if ((hypervisorType != HypervisorType.KVM) && (hypervisorType != HypervisorType.XEN)) {
             return;
         }
 
@@ -1218,7 +1218,7 @@ public class VirtualMachineManagerImpl extends ManagerBase implements VirtualMac
 
 
     protected boolean getExecuteInSequence(HypervisorType hypervisorType) {
-        if (HypervisorType.KVM == hypervisorType) {
+        if ((HypervisorType.KVM == hypervisorType) || (HypervisorType.XEN == hypervisorType)) {
             return false;
         } else {
             return ExecuteInSequence.value();

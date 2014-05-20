@@ -1119,11 +1119,12 @@ public class ManagementServerImpl extends ManagerBase implements ManagementServe
         }
 
         if (!vm.getHypervisorType().equals(HypervisorType.XenServer) && !vm.getHypervisorType().equals(HypervisorType.VMware) && !vm.getHypervisorType().equals(HypervisorType.KVM)
-                && !vm.getHypervisorType().equals(HypervisorType.Ovm) && !vm.getHypervisorType().equals(HypervisorType.Hyperv)) {
+                && !vm.getHypervisorType().equals(HypervisorType.Ovm) && !vm.getHypervisorType().equals(HypervisorType.Hyperv)
+                && !vm.getHypervisorType().equals(HypervisorType.XEN)) {
             if (s_logger.isDebugEnabled()) {
-                s_logger.debug(vm + " is not XenServer/VMware/KVM/OVM/Hyperv, cannot migrate this VM.");
+                s_logger.debug(vm + " is not XenServer/VMware/KVM/XEN/OVM/Hyperv, cannot migrate this VM.");
             }
-            throw new InvalidParameterValueException("Unsupported Hypervisor Type for VM migration, we support " + "XenServer/VMware/KVM/Ovm/Hyperv only");
+            throw new InvalidParameterValueException("Unsupported Hypervisor Type for VM migration, we support " + "XenServer/VMware/KVM/XEN/Ovm/Hyperv only");
         }
 
         long srcHostId = vm.getHostId();
@@ -1184,7 +1185,7 @@ public class ManagementServerImpl extends ManagerBase implements ManagementServe
                 if (volumePools.isEmpty()) {
                     iterator.remove();
                 } else {
-                    if (srcHost.getHypervisorType() == HypervisorType.VMware || srcHost.getHypervisorType() == HypervisorType.KVM) {
+                    if (srcHost.getHypervisorType() == HypervisorType.VMware || srcHost.getHypervisorType() == HypervisorType.KVM || srcHost.getHypervisorType() == HypervisorType.XEN) {
                         zoneWideStoragePool = checkForZoneWideStoragePool(volumePools);
                     }
                     if ((!host.getClusterId().equals(srcHost.getClusterId()) || usesLocal) && !zoneWideStoragePool) {
@@ -1965,7 +1966,7 @@ public class ManagementServerImpl extends ManagerBase implements ManagementServe
 
         //throw exception if hypervisor name is not passed, but version is
         if (hypervisorVersion != null && (hypervisor == null || hypervisor.isEmpty())) {
-            throw new InvalidParameterValueException("Hypervisor version parameter cannot be used without specifying a hypervisor : XenServer, KVM or VMware");
+            throw new InvalidParameterValueException("Hypervisor version parameter cannot be used without specifying a hypervisor : XenServer, KVM, XEN or VMware");
         }
 
         SearchCriteria<GuestOSHypervisorVO> sc = _guestOSHypervisorDao.createSearchCriteria();
@@ -2007,8 +2008,8 @@ public class ManagementServerImpl extends ManagerBase implements ManagementServe
 
         HypervisorType hypervisorType = HypervisorType.getType(hypervisor);
 
-        if (!(hypervisorType == HypervisorType.KVM || hypervisorType == HypervisorType.XenServer || hypervisorType == HypervisorType.VMware)) {
-            throw new InvalidParameterValueException("Please specify a valid hypervisor : XenServer, KVM or VMware");
+        if (!(hypervisorType == HypervisorType.KVM || hypervisorType == HypervisorType.XEN || hypervisorType == HypervisorType.XenServer || hypervisorType == HypervisorType.VMware)) {
+            throw new InvalidParameterValueException("Please specify a valid hypervisor : XenServer, KVM, XEN or VMware");
         }
 
         HypervisorCapabilitiesVO hypervisorCapabilities = _hypervisorCapabilitiesDao.findByHypervisorTypeAndVersion(hypervisorType, hypervisorVersion);

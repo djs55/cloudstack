@@ -210,6 +210,7 @@ public class TemplateServiceImpl implements TemplateService {
              * before cluster created
              */
             availHypers.add(HypervisorType.KVM);
+            availHypers.add(HypervisorType.XEN);
         }
         /* Baremetal need not to download any template */
         availHypers.remove(HypervisorType.BareMetal);
@@ -417,6 +418,7 @@ public class TemplateServiceImpl implements TemplateService {
                              * started before cluster created
                              */
                             availHypers.add(HypervisorType.KVM);
+                            availHypers.add(HypervisorType.XEN);
                         }
                         /* Baremetal need not to download any template */
                         availHypers.remove(HypervisorType.BareMetal);
@@ -811,7 +813,7 @@ public class TemplateServiceImpl implements TemplateService {
         VMTemplateVO tmplt = _templateDao.findById(srcTemplate.getId());
         HypervisorType hyperType = tmplt.getHypervisorType();
         /*No secondary storage vm yet*/
-        if (hyperType != null && hyperType == HypervisorType.KVM) {
+        if (hyperType != null && (hyperType == HypervisorType.KVM || hyperType == HypervisorType.XEN)) {
             return "file://" + ((ImageStoreEntity)srcStore).getMountPoint() + "/" + srcTemplate.getInstallPath();
         }
         return null;

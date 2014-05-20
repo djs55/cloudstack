@@ -420,7 +420,7 @@ public class ResourceManagerImpl extends ManagerBase implements ResourceManager,
         }
 
         if (zone.isSecurityGroupEnabled() && zone.getNetworkType().equals(NetworkType.Advanced)) {
-            if (hypervisorType != HypervisorType.KVM && hypervisorType != HypervisorType.XenServer && hypervisorType != HypervisorType.Simulator) {
+            if (hypervisorType != HypervisorType.KVM && hypervisorType != HypervisorType.XEN && hypervisorType != HypervisorType.XenServer && hypervisorType != HypervisorType.Simulator) {
                 throw new InvalidParameterValueException("Don't support hypervisor type " + hypervisorType + " in advanced security enabled zone");
             }
         }
@@ -761,7 +761,7 @@ public class ResourceManagerImpl extends ManagerBase implements ResourceManager,
                             if (host.getGuid().equalsIgnoreCase(guid)) {
                                 if (hostTags != null) {
                                     if (s_logger.isTraceEnabled()) {
-                                        s_logger.trace("Adding Host Tags for KVM host, tags:  :" + hostTags);
+                                        s_logger.info("Adding Host Tags for KVM host, tags:  :" + hostTags);
                                     }
                                     _hostTagsDao.persist(host.getId(), hostTags);
                                 }
@@ -2099,7 +2099,7 @@ public class ResourceManagerImpl extends ManagerBase implements ResourceManager,
             _agentMgr.pullAgentOutMaintenance(hostId);
 
             // for kvm, need to log into kvm host, restart cloudstack-agent
-            if (host.getHypervisorType() == HypervisorType.KVM) {
+            if ((host.getHypervisorType() == HypervisorType.KVM)||(host.getHypervisorType() == HypervisorType.XEN)) {
 
                 boolean sshToAgent = Boolean.parseBoolean(_configDao.getValue(Config.KvmSshToAgentEnabled.key()));
                 if (!sshToAgent) {
@@ -2173,7 +2173,7 @@ public class ResourceManagerImpl extends ManagerBase implements ResourceManager,
             return true;
         }
 
-        if (host.getHypervisorType() == HypervisorType.KVM) {
+        if ((host.getHypervisorType() == HypervisorType.KVM) || (host.getHypervisorType() == HypervisorType.XEN)){
             MaintainAnswer answer = (MaintainAnswer)_agentMgr.easySend(hostId, new MaintainCommand());
         }
 

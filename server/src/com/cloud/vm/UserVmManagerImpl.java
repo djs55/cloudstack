@@ -2881,7 +2881,7 @@ public class UserVmManagerImpl extends ManagerBase implements UserVmManager, Vir
                     rootDiskSize = Long.parseLong(customParameters.get("rootdisksize"));
 
                     // only KVM supports rootdisksize override
-                    if (hypervisor != HypervisorType.KVM) {
+                    if ((hypervisor != HypervisorType.KVM) && (hypervisor != HypervisorType.XEN)) {
                         throw new InvalidParameterValueException("Hypervisor " + hypervisor + " does not support rootdisksize override");
                     }
 
@@ -3479,7 +3479,7 @@ public class UserVmManagerImpl extends ManagerBase implements UserVmManager, Vir
     @Override
     public void collectVmDiskStatistics(final UserVmVO userVm) {
         // support KVM only util 2013.06.25
-        if (!userVm.getHypervisorType().equals(HypervisorType.KVM))
+        if (!userVm.getHypervisorType().equals(HypervisorType.KVM) && !userVm.getHypervisorType().equals(HypervisorType.XEN))
             return;
         s_logger.debug("Collect vm disk statistics from host before stopping Vm");
         long hostId = userVm.getHostId();
@@ -3754,11 +3754,13 @@ public class UserVmManagerImpl extends ManagerBase implements UserVmManager, Vir
 
         if (!vm.getHypervisorType().equals(HypervisorType.XenServer) && !vm.getHypervisorType().equals(HypervisorType.VMware) && !vm.getHypervisorType().equals(HypervisorType.KVM)
                 && !vm.getHypervisorType().equals(HypervisorType.Ovm) && !vm.getHypervisorType().equals(HypervisorType.Hyperv)
-                && !vm.getHypervisorType().equals(HypervisorType.Simulator)) {
+                && !vm.getHypervisorType().equals(HypervisorType.Simulator)
+                && !vm.getHypervisorType().equals(HypervisorType.XEN)
+            ) {
             if (s_logger.isDebugEnabled()) {
-                s_logger.debug(vm + " is not XenServer/VMware/KVM/Ovm/Hyperv, cannot migrate this VM.");
+                s_logger.debug(vm + " is not XenServer/VMware/KVM/XEN/Ovm/Hyperv, cannot migrate this VM.");
             }
-            throw new InvalidParameterValueException("Unsupported Hypervisor Type for VM migration, we support XenServer/VMware/KVM/Ovm/Hyperv only");
+            throw new InvalidParameterValueException("Unsupported Hypervisor Type for VM migration, we support XenServer/VMware/KVM/XEN/Ovm/Hyperv only");
         }
 
         if (isVMUsingLocalStorage(vm)) {
@@ -4069,8 +4071,9 @@ public class UserVmManagerImpl extends ManagerBase implements UserVmManager, Vir
 
         if (!vm.getHypervisorType().equals(HypervisorType.XenServer) && !vm.getHypervisorType().equals(HypervisorType.VMware) && !vm.getHypervisorType().equals(HypervisorType.KVM)
                 && !vm.getHypervisorType().equals(HypervisorType.Ovm) && !vm.getHypervisorType().equals(HypervisorType.Hyperv)
-                && !vm.getHypervisorType().equals(HypervisorType.Simulator)) {
-            throw new InvalidParameterValueException("Unsupported hypervisor type for vm migration, we support" + " XenServer/VMware/KVM only");
+                && !vm.getHypervisorType().equals(HypervisorType.Simulator)
+                && !vm.getHypervisorType().equals(HypervisorType.XEN)) {
+            throw new InvalidParameterValueException("Unsupported hypervisor type for vm migration, we support" + " XenServer/VMware/KVM/XEN only");
         }
 
         long srcHostId = vm.getHostId();

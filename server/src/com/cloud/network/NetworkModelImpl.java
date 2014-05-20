@@ -1190,6 +1190,7 @@ public class NetworkModelImpl extends ManagerBase implements NetworkModel {
                         label = mgmtTraffic.getXenNetworkLabel();
                         break;
                     case KVM:
+                    case XEN:
                         label = mgmtTraffic.getKvmNetworkLabel();
                         break;
                     case VMware:
@@ -1222,6 +1223,7 @@ public class NetworkModelImpl extends ManagerBase implements NetworkModel {
                         label = storageTraffic.getXenNetworkLabel();
                         break;
                     case KVM:
+                    case XEN:
                         label = storageTraffic.getKvmNetworkLabel();
                         break;
                     case VMware:
@@ -1603,6 +1605,7 @@ public class NetworkModelImpl extends ManagerBase implements NetworkModel {
                         label = publicTraffic.getXenNetworkLabel();
                         break;
                     case KVM:
+                    case XEN:
                         label = publicTraffic.getKvmNetworkLabel();
                         break;
                     case VMware:
@@ -1635,6 +1638,7 @@ public class NetworkModelImpl extends ManagerBase implements NetworkModel {
                         label = guestTraffic.getXenNetworkLabel();
                         break;
                     case KVM:
+                    case XEN:
                         label = guestTraffic.getKvmNetworkLabel();
                         break;
                     case VMware:

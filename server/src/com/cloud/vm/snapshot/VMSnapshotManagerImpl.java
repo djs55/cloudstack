@@ -292,8 +292,8 @@ public class VMSnapshotManagerImpl extends ManagerBase implements VMSnapshotMana
         }
 
         // for KVM, only allow snapshot with memory when VM is in running state
-        if (userVmVo.getHypervisorType() == HypervisorType.KVM && userVmVo.getState() == State.Running && !snapshotMemory) {
-            throw new InvalidParameterValueException("KVM VM does not allow to take a disk-only snapshot when VM is in running state");
+        if ((userVmVo.getHypervisorType() == HypervisorType.KVM || userVmVo.getHypervisorType() == HypervisorType.XEN) && userVmVo.getState() == State.Running && !snapshotMemory) {
+            throw new InvalidParameterValueException("KVM/XEN VM does not allow to take a disk-only snapshot when VM is in running state");
         }
 
         // check access

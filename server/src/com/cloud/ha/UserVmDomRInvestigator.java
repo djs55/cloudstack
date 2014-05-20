@@ -160,7 +160,7 @@ public class UserVmDomRInvestigator extends AbstractInvestigatorImpl {
         String routerPrivateIp = router.getPrivateIpAddress();
 
         List<Long> otherHosts = new ArrayList<Long>();
-        if (vm.getHypervisorType() == HypervisorType.XenServer || vm.getHypervisorType() == HypervisorType.KVM) {
+        if (vm.getHypervisorType() == HypervisorType.XenServer || vm.getHypervisorType() == HypervisorType.KVM || vm.getHypervisorType() == HypervisorType.XEN) {
             otherHosts.add(router.getHostId());
         } else {
             otherHosts = findHostByPod(router.getPodIdToDeployIn(), null);

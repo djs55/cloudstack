@@ -215,7 +215,8 @@ public class DefaultEndPointSelector implements EndPointSelector {
     public EndPoint select(DataObject srcData, DataObject destData, StorageAction action) {
         if (action == StorageAction.BACKUPSNAPSHOT && srcData.getDataStore().getRole() == DataStoreRole.Primary) {
             SnapshotInfo srcSnapshot = (SnapshotInfo)srcData;
-            if (srcSnapshot.getHypervisorType() == Hypervisor.HypervisorType.KVM) {
+            if (  (srcSnapshot.getHypervisorType() == Hypervisor.HypervisorType.KVM)
+               || (srcSnapshot.getHypervisorType() == Hypervisor.HypervisorType.XEN)) {
                 VolumeInfo volumeInfo = srcSnapshot.getBaseVolume();
                 VirtualMachine vm = volumeInfo.getAttachedVM();
                 if (vm != null && vm.getState() == VirtualMachine.State.Running) {
@@ -297,7 +298,8 @@ public class DefaultEndPointSelector implements EndPointSelector {
     public EndPoint select(DataObject object, StorageAction action) {
         if (action == StorageAction.TAKESNAPSHOT) {
             SnapshotInfo snapshotInfo = (SnapshotInfo)object;
-            if (snapshotInfo.getHypervisorType() == Hypervisor.HypervisorType.KVM) {
+            if (  (snapshotInfo.getHypervisorType() == Hypervisor.HypervisorType.KVM)
+               || (snapshotInfo.getHypervisorType() == Hypervisor.HypervisorType.XEN)){
                 VolumeInfo volumeInfo = snapshotInfo.getBaseVolume();
                 VirtualMachine vm = volumeInfo.getAttachedVM();
                 if ((vm != null) && (vm.getState() == VirtualMachine.State.Running)) {

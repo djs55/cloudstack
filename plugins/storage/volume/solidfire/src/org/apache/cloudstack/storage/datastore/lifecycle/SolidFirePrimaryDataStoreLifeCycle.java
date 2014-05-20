@@ -308,11 +308,13 @@ public class SolidFirePrimaryDataStoreLifeCycle implements PrimaryDataStoreLifeC
         List<HostVO> xenServerHosts = _resourceMgr.listAllUpAndEnabledHostsInOneZoneByHypervisor(HypervisorType.XenServer, scope.getScopeId());
         List<HostVO> vmWareServerHosts = _resourceMgr.listAllUpAndEnabledHostsInOneZoneByHypervisor(HypervisorType.VMware, scope.getScopeId());
         List<HostVO> kvmHosts = _resourceMgr.listAllUpAndEnabledHostsInOneZoneByHypervisor(HypervisorType.KVM, scope.getScopeId());
+        List<HostVO> xenHosts = _resourceMgr.listAllUpAndEnabledHostsInOneZoneByHypervisor(HypervisorType.XEN, scope.getScopeId());
         List<HostVO> hosts = new ArrayList<HostVO>();
 
         hosts.addAll(xenServerHosts);
         hosts.addAll(vmWareServerHosts);
         hosts.addAll(kvmHosts);
+        hosts.addAll(xenHosts);
 
         for (HostVO host : hosts) {
             try {

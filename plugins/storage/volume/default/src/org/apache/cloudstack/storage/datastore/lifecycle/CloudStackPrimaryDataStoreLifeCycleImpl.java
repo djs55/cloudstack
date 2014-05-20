@@ -488,7 +488,7 @@ public class CloudStackPrimaryDataStoreLifeCycleImpl implements PrimaryDataStore
             if (answer != null && answer.getResult()) {
                 deleteFlag = true;
                 // if host is KVM hypervisor then send deleteStoragepoolcmd to all the kvm hosts.
-                if (HypervisorType.KVM != hType) {
+                if ((HypervisorType.KVM != hType)&&(HypervisorType.XEN != hType)) {
                     break;
                 }
             } else {

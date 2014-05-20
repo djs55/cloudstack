@@ -133,7 +133,7 @@ public class DirectAgentManagerSimpleImpl extends ManagerBase implements AgentMa
             } catch (ConfigurationException e) {
                 logger.debug("Failed to load resource:" + e.toString());
             }
-        } else if (host.getHypervisorType() == HypervisorType.KVM) {
+        } else if ((host.getHypervisorType() == HypervisorType.KVM)||(host.getHypervisorType() == HypervisorType.XEN)) {
             resource = new LibvirtComputingResource();
             try {
                 params.put("public.network.device", "cloudbr0");

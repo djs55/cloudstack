@@ -697,10 +697,11 @@ public class VolumeApiServiceImpl extends ManagerBase implements VolumeApiServic
 
         /* Only works for KVM/Xen/VMware for now, and volumes with 'None' since they're just allocated in db */
         if (_volsDao.getHypervisorType(volume.getId()) != HypervisorType.KVM
+            && _volsDao.getHypervisorType(volume.getId()) != HypervisorType.XEN
             && _volsDao.getHypervisorType(volume.getId()) != HypervisorType.XenServer
             && _volsDao.getHypervisorType(volume.getId()) != HypervisorType.VMware
             && _volsDao.getHypervisorType(volume.getId()) != HypervisorType.None) {
-            throw new InvalidParameterValueException("Cloudstack currently only supports volumes marked as KVM, VMware, XenServer hypervisor for resize");
+            throw new InvalidParameterValueException("Cloudstack currently only supports volumes marked as KVM, Xen, VMware, XenServer hypervisor for resize");
         }
 
         if (volume.getState() != Volume.State.Ready && volume.getState() != Volume.State.Allocated) {
@@ -1932,6 +1933,8 @@ public class VolumeApiServiceImpl extends ManagerBase implements VolumeApiServic
             return "vhd";
         } else if (cluster.getHypervisorType() == HypervisorType.KVM) {
             return "qcow2";
+        } else if (cluster.getHypervisorType() == HypervisorType.XEN) {
+            return "qcow2";
         } else if (cluster.getHypervisorType() == HypervisorType.Hyperv) {
             return "vhdx";
         } else if (cluster.getHypervisorType() == HypervisorType.VMware) {
@@ -2037,7 +2040,7 @@ public class VolumeApiServiceImpl extends ManagerBase implements VolumeApiServic
         }
 
         if (sendCommand) {
-            if (host.getHypervisorType() == HypervisorType.KVM &&
+            if ((host.getHypervisorType() == HypervisorType.KVM || host.getHypervisorType() == HypervisorType.XEN) &&
                 volumeToAttachStoragePool.isManaged() &&
                 volumeToAttach.getPath() == null) {
                 volumeToAttach.setPath(volumeToAttach.get_iScsiName());

@@ -66,7 +66,7 @@ public class SolidFireHostListener implements HypervisorHostListener {
         }
 
         // just want to send the ModifyStoragePoolCommand for KVM
-        if (host.getHypervisorType() != HypervisorType.KVM) {
+        if ((host.getHypervisorType() != HypervisorType.KVM) && (host.getHypervisorType() != HypervisorType.XEN)) {
             return true;
         }
 

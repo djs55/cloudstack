@@ -245,6 +245,7 @@ public class OvsTunnelManagerImpl extends ManagerBase implements OvsTunnelManage
             }
             break;
         case KVM:
+        case XEN:
             label = physNetTT.getKvmNetworkLabel();
             if ((label != null) && (!label.equals(""))) {
                 physNetLabel = label;

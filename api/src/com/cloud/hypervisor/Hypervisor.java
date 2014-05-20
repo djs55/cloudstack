@@ -80,6 +80,8 @@ public class Hypervisor {
                 return ImageFormat.VHD;
             } else if (hyperType == HypervisorType.KVM) {
                 return ImageFormat.QCOW2;
+            } else if (hyperType == HypervisorType.XEN) {
+                return ImageFormat.QCOW2;
             } else if (hyperType == HypervisorType.VMware) {
                 return ImageFormat.OVA;
             } else if (hyperType == HypervisorType.Ovm) {

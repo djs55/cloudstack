@@ -501,7 +501,7 @@ public class VolumeOrchestrator extends ManagerBase implements VolumeOrchestrati
     private VolumeInfo updateHypervisorSnapshotReserveForVolume(DiskOffering diskOffering, VolumeInfo volumeInfo, HypervisorType hyperType) {
         Integer hypervisorSnapshotReserve = diskOffering.getHypervisorSnapshotReserve();
 
-        if (hyperType == HypervisorType.KVM) {
+        if ((hyperType == HypervisorType.KVM) || (hyperType == HypervisorType.XEN)){
             hypervisorSnapshotReserve = null;
         } else if (hypervisorSnapshotReserve == null || hypervisorSnapshotReserve < 0) {
             hypervisorSnapshotReserve = 0;
@@ -708,6 +708,8 @@ public class VolumeOrchestrator extends ManagerBase implements VolumeOrchestrati
         if (hyperType == HypervisorType.XenServer) {
             return ImageFormat.VHD;
         } else if (hyperType == HypervisorType.KVM) {
+            return ImageFormat.QCOW2;
+        } else if (hyperType == HypervisorType.XEN) {
             return ImageFormat.QCOW2;
         } else if (hyperType == HypervisorType.VMware) {
             return ImageFormat.OVA;

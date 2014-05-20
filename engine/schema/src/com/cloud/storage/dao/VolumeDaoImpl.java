@@ -283,6 +283,8 @@ public class VolumeDaoImpl extends GenericDaoBase<VolumeVO, Long> implements Vol
         HypervisorType type = getHypervisorType(volumeId);
         if (type.equals(HypervisorType.KVM)) {
             return ImageFormat.QCOW2;
+        } else if (type.equals(HypervisorType.XEN)) {
+            return ImageFormat.QCOW2;
         } else if (type.equals(HypervisorType.XenServer)) {
             return ImageFormat.VHD;
         } else if (type.equals(HypervisorType.VMware)) {

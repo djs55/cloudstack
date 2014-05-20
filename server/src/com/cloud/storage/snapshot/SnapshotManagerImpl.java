@@ -817,7 +817,7 @@ public class SnapshotManagerImpl extends ManagerBase implements SnapshotManager,
     }
 
     private boolean hostSupportSnapsthotForVolume(HostVO host, VolumeInfo volume) {
-        if (host.getHypervisorType() != HypervisorType.KVM) {
+        if ((host.getHypervisorType() != HypervisorType.KVM) && (host.getHypervisorType () != HypervisorType.XEN)) {
             return true;
         }
 
@@ -863,7 +863,7 @@ public class SnapshotManagerImpl extends ManagerBase implements SnapshotManager,
             throw new InvalidParameterValueException("Ovm won't support taking snapshot");
         }
 
-        if (hypervisorType.equals(HypervisorType.KVM)) {
+        if (hypervisorType.equals(HypervisorType.KVM) || hypervisorType.equals(HypervisorType.XEN)) {
             List<HostVO> hosts = null;
             if (scope.equals(ScopeType.CLUSTER)) {
                 ClusterVO cluster = _clusterDao.findById(storagePool.getClusterId());
@@ -888,7 +888,7 @@ public class SnapshotManagerImpl extends ManagerBase implements SnapshotManager,
                         " is in " + userVm.getState().toString() + " state");
                 }
 
-                if (userVm.getHypervisorType() == HypervisorType.VMware || userVm.getHypervisorType() == HypervisorType.KVM) {
+                if (userVm.getHypervisorType() == HypervisorType.VMware || userVm.getHypervisorType() == HypervisorType.KVM || userVm.getHypervisorType() == HypervisorType.XEN) {
                     List<SnapshotVO> activeSnapshots =
                         _snapshotDao.listByInstanceId(volume.getInstanceId(), Snapshot.State.Creating, Snapshot.State.CreatedOnPrimary, Snapshot.State.BackingUp);
                     if (activeSnapshots.size() > 0) {

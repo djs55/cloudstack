@@ -740,6 +740,7 @@ public class InternalLoadBalancerVMManagerImpl extends ManagerBase implements In
                         templateName = VirtualNetworkApplianceManager.RouterTemplateXen.valueIn(dest.getDataCenter().getId());
                         break;
                     case KVM:
+                    case XEN:
                         templateName = VirtualNetworkApplianceManager.RouterTemplateKvm.valueIn(dest.getDataCenter().getId());
                         break;
                     case VMware:
