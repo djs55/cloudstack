@@ -45,7 +45,8 @@ import java.util.Map;
  *
  */
 public interface VirtualNetworkApplianceManager extends Manager, VirtualNetworkApplianceService {
-    static final String RouterTemplateXenCK = "router.template.xen";
+    static final String RouterTemplateXenServerCK = "router.template.xen";
+    static final String RouterTemplateXenCK = "router.template.libvirtxen";
     static final String RouterTemplateKvmCK = "router.template.kvm";
     static final String RouterTemplateVmwareCK = "router.template.vmware";
     static final String RouterTemplateHyperVCK = "router.template.hyperv";
@@ -53,8 +54,10 @@ public interface VirtualNetworkApplianceManager extends Manager, VirtualNetworkA
     static final String SetServiceMonitorCK = "network.router.EnableServiceMonitoring";
     static final String RouterAlertsCheckIntervalCK = "router.alerts.check.interval";
 
-    static final ConfigKey<String> RouterTemplateXen = new ConfigKey<String>(String.class, RouterTemplateXenCK, "Advanced", "SystemVM Template (XenServer)",
+    static final ConfigKey<String> RouterTemplateXenServer = new ConfigKey<String>(String.class, RouterTemplateXenServerCK, "Advanced", "SystemVM Template (XenServer)",
         "Name of the default router template on Xenserver.", true, ConfigKey.Scope.Zone, null);
+    static final ConfigKey<String> RouterTemplateXen = new ConfigKey<String>(String.class, RouterTemplateXenCK, "Advanced", "SystemVM Template (XEN)",
+        "Name of the default router template on XEN.", true, ConfigKey.Scope.Zone, null);
     static final ConfigKey<String> RouterTemplateKvm = new ConfigKey<String>(String.class, RouterTemplateKvmCK, "Advanced", "SystemVM Template (KVM)",
         "Name of the default router template on KVM.", true, ConfigKey.Scope.Zone, null);
     static final ConfigKey<String> RouterTemplateVmware = new ConfigKey<String>(String.class, RouterTemplateVmwareCK, "Advanced", "SystemVM Template (vSphere)",
