@@ -28,8 +28,8 @@ add_backports () {
 }
 
 install_packages() {
-  DEBIAN_FRONTEND=noninteractive
-  DEBIAN_PRIORITY=critical
+  export DEBIAN_FRONTEND=noninteractive
+  export DEBIAN_PRIORITY=critical
 
   # Basic packages
   apt-get --no-install-recommends -q -y --force-yes install rsyslog logrotate cron chkconfig insserv net-tools ifupdown vim-tiny netbase iptables
