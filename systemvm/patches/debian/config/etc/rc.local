@@ -1,8 +1,5 @@
 #/bin/bash
 
-# Xen: additional console devices aren't cold-plugged properly by udev
-udevadm trigger --action=add
-
 [ ! -f /var/cache/cloud/enabled_svcs ] && touch /var/cache/cloud/enabled_svcs
 for svc in $(cat /var/cache/cloud/enabled_svcs) 
 do

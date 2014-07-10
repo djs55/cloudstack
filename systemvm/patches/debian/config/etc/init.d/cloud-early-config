@@ -103,6 +103,24 @@ hypervisor() {
 
 }
 
+get_boot_params_from_channel() {
+  local DEVICE=$1
+  echo get_boot_params_from_channel $DEVICE
+  while [ ! -e /var/cache/cloud/cmdline ] || [ ! -e /var/cache/cloud/authorized_keys ]; do
+    stty raw
+    read line
+    if [[ $line == cmdline:* ]]; then
+      cmd=${line//cmdline:/}
+      echo $cmd > /var/cache/cloud/cmdline
+    elif [[ $line == pubkey:* ]]; then
+      pubkey=${line//pubkey:/}
+      echo $pubkey > /var/cache/cloud/authorized_keys
+      echo $pubkey > /root/.ssh/authorized_keys
+    fi
+  done < $DEVICE
+  chmod go-rwx /root/.ssh/authorized_keys
+}
+
 get_boot_params() {
   local EXTRA_MOUNT=/media/extra
   local hyp=$(hypervisor)
@@ -110,24 +128,20 @@ get_boot_params() {
 
   case $hyp in
      xen-domU|xen-hvm)
-          cat /proc/cmdline > /var/cache/cloud/cmdline
-          sed -i "s/%/ /g" /var/cache/cloud/cmdline
+          udevadm trigger --action=add
+          udevadm settle
+          if [ -e "/dev/xenconsole/console-1" ]; then
+              get_boot_params_from_channel "/dev/xenconsole/console-1"
+          else
+              cat /proc/cmdline > /var/cache/cloud/cmdline
+              sed -i "s/%/ /g" /var/cache/cloud/cmdline
+          fi
           ;;
      kvm)
           if [ ! -e /dev/vport0p1 ]; then
             log_it "/dev/vport0p1 not loaded, perhaps guest kernel is too old." && exit 2
           fi
-          while read line; do
-            if [[ $line == cmdline:* ]]; then
-              cmd=${line//cmdline:/}
-              echo $cmd > /var/cache/cloud/cmdline
-            elif [[ $line == pubkey:* ]]; then
-              pubkey=${line//pubkey:/}
-              echo $pubkey > /var/cache/cloud/authorized_keys
-              echo $pubkey > /root/.ssh/authorized_keys
-            fi
-          done < /dev/vport0p1
-          chmod go-rwx /root/.ssh/authorized_keys
+          get_boot_params_from_channel "/dev/vport0p1"
           ;;
      vmware)
           vmtoolsd --cmd 'machine.id.get' > /var/cache/cloud/cmdline 

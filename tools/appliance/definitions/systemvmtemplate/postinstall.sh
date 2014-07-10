@@ -21,6 +21,12 @@ ROOTPW=password
 HOSTNAME=systemvm
 CLOUDSTACK_RELEASE=4.4.0
 
+add_udev_rules () {
+    wget --no-check-certificate https://raw.githubusercontent.com/djs55/mirage-console/master/udev/99-xen-console.rules -O /etc/udev/rules.d/99-xen-console.rules
+    wget --no-check-certificate https://raw.githubusercontent.com/djs55/mirage-console/master/udev/xenconsole-setup-tty -O /lib/udev/xenconsole-setup-tty
+    chmod +x /lib/udev/xenconsole-setup-tty
+}
+
 add_backports () {
     sed -i '/backports/d' /etc/apt/sources.list
     echo 'deb http://http.us.debian.org/debian wheezy-backports main' >> /etc/apt/sources.list
@@ -64,7 +70,7 @@ install_packages() {
   # xenstore utils
   apt-get --no-install-recommends -q -y --force-yes install xenstore-utils libxenstore3.0
   # keepalived and conntrackd for redundant router
-  apt-get --no-install-recommends -q -y --force-yes install keepalived conntrackd ipvsadm libnetfilter-conntrack3 libnl1
+  apt-get --no-install-recommends -q -y --force-yes install keepalived conntrackd ipvsadm libnetfilter-conntrack3 libnl-3-200
   # ipcalc
   apt-get --no-install-recommends -q -y --force-yes install ipcalc
   apt-get update
@@ -241,6 +247,8 @@ do_signature() {
 
 begin=$(date +%s)
 
+echo "*************ADDING UDEV RULES********************"
+add_udev_rules
 echo "*************ADDING BACKPORTS********************"
 add_backports
 echo "*************INSTALLING PACKAGES********************"
