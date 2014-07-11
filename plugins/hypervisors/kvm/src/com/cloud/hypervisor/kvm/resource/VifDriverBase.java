@@ -29,7 +29,6 @@ import com.cloud.agent.api.to.NicTO;
 import com.cloud.exception.InternalErrorException;
 
 import com.cloud.hypervisor.kvm.resource.LibvirtVMDef.DiskDef;
-import com.cloud.hypervisor.Hypervisor.HypervisorType;
 
 public abstract class VifDriverBase implements VifDriver {
 
