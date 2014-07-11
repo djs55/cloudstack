@@ -5012,7 +5012,7 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
 
     public DiskDef.diskBus getPVGuestDiskModel() {
         switch (_hypervisorType){
-            case HypervisorType.XEN:
+            case XEN:
                 return DiskDef.diskBus.XEN;
             default:
                 return DiskDef.diskBus.VIRTIO;

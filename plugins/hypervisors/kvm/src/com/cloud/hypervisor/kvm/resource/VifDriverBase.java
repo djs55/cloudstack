@@ -28,6 +28,9 @@ import org.libvirt.LibvirtException;
 import com.cloud.agent.api.to.NicTO;
 import com.cloud.exception.InternalErrorException;
 
+import com.cloud.hypervisor.kvm.resource.LibvirtVMDef.DiskDef;
+import com.cloud.hypervisor.Hypervisor.HypervisorType;
+
 public abstract class VifDriverBase implements VifDriver {
 
     protected LibvirtComputingResource _libvirtComputingResource;
@@ -48,8 +51,8 @@ public abstract class VifDriverBase implements VifDriver {
     public abstract void unplug(LibvirtVMDef.InterfaceDef iface);
 
     private DiskDef.diskBus getPVGuestDiskModel() {
-        switch (_hypervisorType){
-            case HypervisorType.XEN:
+        switch (_libvirtComputingResource.getHypervisorType()){
+            case XEN:
                 return LibvirtVMDef.InterfaceDef.nicModel.XEN;
             default:
                 return LibvirtVMDef.InterfaceDef.nicModel.VIRTIO;
