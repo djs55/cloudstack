@@ -492,6 +492,8 @@ public class LibvirtVMDef {
                 return "sd" + suffix;
             } else if (bus == diskBus.VIRTIO) {
                 return "vd" + suffix;
+            } else if (bus == diskBus.XEN) {
+                return "xvd" + suffix;
             }
             return "hd" + suffix;
 
@@ -732,7 +734,7 @@ public class LibvirtVMDef {
         }
 
         enum nicModel {
-            E1000("e1000"), VIRTIO("virtio"), RTL8139("rtl8139"), NE2KPCI("ne2k_pci");
+            E1000("e1000"), VIRTIO("virtio"), XEN("xen"), RTL8139("rtl8139"), NE2KPCI("ne2k_pci");
             String _model;
 
             nicModel(String model) {

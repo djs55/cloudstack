@@ -961,24 +961,24 @@ public class KVMStorageProcessor implements StorageProcessor {
                         String device = Script.runSimpleBashScript("rbd showmapped | grep \""+splitPoolImage[0]+"  "+splitPoolImage[1]+"\" | cut -d \" \" -f10");
                         if (device != null) {
                             s_logger.debug("RBD device on host is: "+device);
-                            diskdef.defBlockBasedDisk(device, devId, DiskDef.diskBus.VIRTIO);
+                            diskdef.defBlockBasedDisk(device, devId, resource.getPVGuestDiskModel());
                         } else {
                             throw new InternalErrorException("Error while mapping disk "+attachingDisk.getPath()+" on host");
                         }
                     } else {
                         diskdef.defNetworkBasedDisk(attachingDisk.getPath(), attachingPool.getSourceHost(), attachingPool.getSourcePort(), attachingPool.getAuthUserName(),
-                                attachingPool.getUuid(), devId, DiskDef.diskBus.VIRTIO, diskProtocol.RBD, DiskDef.diskFmtType.RAW);
+                                attachingPool.getUuid(), devId, resource.getPVGuestDiskModel(), diskProtocol.RBD, DiskDef.diskFmtType.RAW);
                     }
                 } else if (attachingPool.getType() == StoragePoolType.Gluster) {
                     String mountpoint = attachingPool.getLocalPath();
                     String path = attachingDisk.getPath();
                     String glusterVolume = attachingPool.getSourceDir().replace("/", "");
                     diskdef.defNetworkBasedDisk(glusterVolume + path.replace(mountpoint, ""), attachingPool.getSourceHost(), attachingPool.getSourcePort(), null,
-                        null, devId, DiskDef.diskBus.VIRTIO, diskProtocol.GLUSTER, DiskDef.diskFmtType.QCOW2);
+                        null, devId, resource.getPVGuestDiskModel(), diskProtocol.GLUSTER, DiskDef.diskFmtType.QCOW2);
                 } else if (attachingDisk.getFormat() == PhysicalDiskFormat.QCOW2) {
-                    diskdef.defFileBasedDisk(attachingDisk.getPath(), devId, DiskDef.diskBus.VIRTIO, DiskDef.diskFmtType.QCOW2);
+                    diskdef.defFileBasedDisk(attachingDisk.getPath(), devId, resource.getPVGuestDiskModel(), DiskDef.diskFmtType.QCOW2);
                 } else if (attachingDisk.getFormat() == PhysicalDiskFormat.RAW) {
-                    diskdef.defBlockBasedDisk(attachingDisk.getPath(), devId, DiskDef.diskBus.VIRTIO);
+                    diskdef.defBlockBasedDisk(attachingDisk.getPath(), devId, resource.getPVGuestDiskModel());
                 }
             }
 

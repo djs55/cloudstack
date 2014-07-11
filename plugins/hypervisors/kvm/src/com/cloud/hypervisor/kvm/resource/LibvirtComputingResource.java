@@ -3983,7 +3983,7 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
                     disk.defBlockBasedDisk(physicalDisk.getPath(), devId, diskBusType);
                 } else {
                     if (volume.getType() == Volume.Type.DATADISK) {
-                        disk.defFileBasedDisk(physicalDisk.getPath(), devId, DiskDef.diskBus.VIRTIO, DiskDef.diskFmtType.QCOW2);
+                        disk.defFileBasedDisk(physicalDisk.getPath(), devId, getPVGuestDiskModel(), DiskDef.diskFmtType.QCOW2);
                     } else {
                         disk.defFileBasedDisk(physicalDisk.getPath(), devId, diskBusType, DiskDef.diskFmtType.QCOW2);
                     }
@@ -4135,14 +4135,14 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
                 diskdef = new DiskDef();
                 if (attachingPool.getType() == StoragePoolType.RBD) {
                     diskdef.defNetworkBasedDisk(attachingDisk.getPath(), attachingPool.getSourceHost(), attachingPool.getSourcePort(), attachingPool.getAuthUserName(),
-                            attachingPool.getUuid(), devId, DiskDef.diskBus.VIRTIO, diskProtocol.RBD, DiskDef.diskFmtType.RAW);
+                            attachingPool.getUuid(), devId, getPVGuestDiskModel(), diskProtocol.RBD, DiskDef.diskFmtType.RAW);
                 } else if (attachingPool.getType() == StoragePoolType.Gluster) {
                     diskdef.defNetworkBasedDisk(attachingDisk.getPath(), attachingPool.getSourceHost(), attachingPool.getSourcePort(), null,
-                            null, devId, DiskDef.diskBus.VIRTIO, diskProtocol.GLUSTER, DiskDef.diskFmtType.QCOW2);
+                            null, devId, getPVGuestDiskModel(), diskProtocol.GLUSTER, DiskDef.diskFmtType.QCOW2);
                 } else if (attachingDisk.getFormat() == PhysicalDiskFormat.QCOW2) {
-                    diskdef.defFileBasedDisk(attachingDisk.getPath(), devId, DiskDef.diskBus.VIRTIO, DiskDef.diskFmtType.QCOW2);
+                    diskdef.defFileBasedDisk(attachingDisk.getPath(), devId, getPVGuestDiskModel(), DiskDef.diskFmtType.QCOW2);
                 } else if (attachingDisk.getFormat() == PhysicalDiskFormat.RAW) {
-                    diskdef.defBlockBasedDisk(attachingDisk.getPath(), devId, DiskDef.diskBus.VIRTIO);
+                    diskdef.defBlockBasedDisk(attachingDisk.getPath(), devId, getPVGuestDiskModel());
                 }
                 if ((bytesReadRate != null) && (bytesReadRate > 0))
                     diskdef.setBytesReadRate(bytesReadRate);
@@ -5010,9 +5010,18 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
         }
     }
 
+    public DiskDef.diskBus getPVGuestDiskModel() {
+        switch (_hypervisorType){
+            case HypervisorType.XEN:
+                return DiskDef.diskBus.XEN;
+            default:
+                return DiskDef.diskBus.VIRTIO;
+        }
+    }
+
     private DiskDef.diskBus getGuestDiskModel(String guestOSType) {
         if (isGuestPVEnabled(guestOSType)) {
-            return DiskDef.diskBus.VIRTIO;
+            return getPVGuestDiskModel();
         } else {
             return DiskDef.diskBus.IDE;
         }

@@ -47,6 +47,15 @@ public abstract class VifDriverBase implements VifDriver {
     @Override
     public abstract void unplug(LibvirtVMDef.InterfaceDef iface);
 
+    private DiskDef.diskBus getPVGuestDiskModel() {
+        switch (_hypervisorType){
+            case HypervisorType.XEN:
+                return LibvirtVMDef.InterfaceDef.nicModel.XEN;
+            default:
+                return LibvirtVMDef.InterfaceDef.nicModel.VIRTIO;
+        }
+    }
+
     protected LibvirtVMDef.InterfaceDef.nicModel getGuestNicModel(String guestOSType, String nicAdapter) {
         // if nicAdapter is found in ENUM, use it. Otherwise, match guest OS type as before
         if (nicAdapter != null && !nicAdapter.isEmpty()) {
@@ -58,7 +67,7 @@ public abstract class VifDriverBase implements VifDriver {
         }
 
         if (_libvirtComputingResource.isGuestPVEnabled(guestOSType)) {
-            return LibvirtVMDef.InterfaceDef.nicModel.VIRTIO;
+            return getPVGuestDiskModel();
         } else {
             return LibvirtVMDef.InterfaceDef.nicModel.E1000;
         }
