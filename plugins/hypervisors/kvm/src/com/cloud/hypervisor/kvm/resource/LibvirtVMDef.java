@@ -120,7 +120,11 @@ public class LibvirtVMDef {
             } else if (_type == guestType.XEN) {
                 StringBuilder guestDef = new StringBuilder();
                 guestDef.append("<os>\n");
-                guestDef.append("<type>hvm</type>\n");
+                guestDef.append("<type>linux</type>\n");
+                // XXX HACK XXX: workaround dom0 blkfront qdisk crash
+                guestDef.append("<kernel>/root/vmlinuz-3.13-1-686-pae</kernel>\n");
+                guestDef.append("<initrd>/root/initrd-3.13-1-686-pae</initrd>\n");
+                guestDef.append("<cmdline>root=/dev/xvda5 ro console=tty0 console=hvc0</cmdline>");
                 guestDef.append("</os>\n");
                 return guestDef.toString();
              } else {
