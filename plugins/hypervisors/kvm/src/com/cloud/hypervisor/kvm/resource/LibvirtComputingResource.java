@@ -3753,8 +3753,11 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
         GraphicDef grap = new GraphicDef("vnc", (short)0, true, vmTO.getVncAddr(), passwd, null);
         devices.addDevice(grap);
 
-        InputDef input = new InputDef("tablet", "usb");
-        devices.addDevice(input);
+        // On Xen we use PV system VMs which don't support USB tablet
+        if (HypervisorType.XEN != _hypervisorType || VirtualMachine.Type.User == vmTO.getType()) {
+            InputDef input = new InputDef("tablet", "usb");
+            devices.addDevice(input);
+        }
 
         vm.addComp(devices);
 
